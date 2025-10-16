@@ -39,6 +39,14 @@ namespace OnlineFoodDelivery.Aspect
 
                 context.Result = result;
             }
+            else if (exceptionType == typeof(OrderNotExistsException))
+            {
+                context.Result = new NotFoundObjectResult(message);
+            }
+            else if (exceptionType == typeof(PaymentProcessingException))
+            {
+                context.Result = new BadRequestObjectResult(message);
+            }
             else if (exceptionType == typeof(CategoryNotFoundException))
             {
                 var result = new ConflictObjectResult(message);

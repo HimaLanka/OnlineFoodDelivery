@@ -48,6 +48,17 @@ namespace OnlineFoodDelivery.Data
                 .WithMany(c => c.MenuItems)
                 .HasForeignKey(i => i.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
+        public DbSet<Payment> Payment { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Payment>()
+                .Property(p => p.Amount)
+                .HasPrecision(10, 2); // Precision: total digits = 10, scale = 2
+            modelBuilder.Entity<Order>()
+               .Property(p => p.TotalAmount)
+               .HasPrecision(10, 2);
+        }
+
 
             modelBuilder.Entity<MenuItem>()
                 .Property(m => m.ItemPrice)

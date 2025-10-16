@@ -824,5 +824,114 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OnlineFoodDelivery.Controllers.PaymentController",
+    "Method": "DeletePayment",
+    "RelativePath": "api/Payment/{paymentId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OnlineFoodDelivery.Controllers.PaymentController",
+    "Method": "GetAllPayments",
+    "RelativePath": "api/Payment/all-payments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OnlineFoodDelivery.Controllers.PaymentController",
+    "Method": "ProcessPayment",
+    "RelativePath": "api/Payment/payment-process",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "method",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cardNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "upiId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OnlineFoodDelivery.Controllers.PaymentController",
+    "Method": "GetTotalAmountByMonth",
+    "RelativePath": "api/Payment/totalamount-month",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OnlineFoodDelivery.Controllers.PaymentController",
+    "Method": "UpdatePaymentMethod",
+    "RelativePath": "api/Payment/update-payment-method",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "newMethod",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "cardNumber",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "upiId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
