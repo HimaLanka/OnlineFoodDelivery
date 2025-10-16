@@ -21,7 +21,7 @@ namespace OnlineFoodDelivery.Model
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
-        public int? RestaurantId { get; set; }
+        public long RestaurantId { get; set; }
 
         [ForeignKey("RestaurantId")]
         public virtual Restaurant? Restaurant { get; set; }
