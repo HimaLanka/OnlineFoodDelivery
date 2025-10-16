@@ -53,6 +53,68 @@ namespace OnlineFoodDelivery.Aspect
                 context.Result = result;
             }
 
+            else if (exceptionType == typeof(AgentNotFoundException))
+            {
+                var result = new NotFoundObjectResult(message);
+
+                context.Result = result;
+            }
+
+            else if (exceptionType == typeof(AgentIDNotFoundException))
+            {
+                var result = new NotFoundObjectResult(message);
+
+                context.Result = result;
+            }
+
+            else if (exceptionType == typeof(AgentAlreadyExistsException))
+            {
+                var result = new ConflictObjectResult(message);
+
+                context.Result = result;
+            }
+
+            else if (exceptionType == typeof(DeliveryByIDNotFoundException))
+            {
+                var result = new NotFoundObjectResult(message);
+
+                context.Result = result;
+            }
+
+            else if (exceptionType == typeof(EmailDeliveryException))
+            {
+                var result = new NotFoundObjectResult(message);
+
+                context.Result = result;
+            }
+
+            else if (exceptionType == typeof(OrderNotFoundException))
+            {
+                var result = new NotFoundObjectResult(message);
+
+                context.Result = result;
+            }
+
+            else if (exceptionType == typeof(AgentsNotAvailableException))
+            {
+                var result = new ConflictObjectResult(message);
+
+                context.Result = result;
+            }
+
+            else if (exceptionType == typeof(CustomerNotFoundException))
+            {
+                var result = new NotFoundObjectResult(message);
+
+                context.Result = result;
+            }
+
+            else if (exceptionType == typeof(DeliveryNotFoundException))
+            {
+                var result = new NotFoundObjectResult(message);
+
+                context.Result = result;
+            }
 
             else
 

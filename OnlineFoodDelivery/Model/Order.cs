@@ -25,6 +25,7 @@ namespace OnlineFoodDelivery.Model
 
         [ForeignKey("RestaurantId")]
         public virtual Restaurant? Restaurant { get; set; }
-        public virtual ICollection<CartItem> CartItems { get; set; }    
+        public virtual ICollection<CartItem> CartItems { get; set; }
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

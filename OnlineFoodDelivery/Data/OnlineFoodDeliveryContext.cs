@@ -23,6 +23,10 @@ namespace OnlineFoodDelivery.Data
         public DbSet<User> User { get; set; }
         public DbSet<MenuItem> MenuItem { get; set; }
 
+        public DbSet<DeliveryAgent> DeliveryAgent { get; set; } = default!;
+        public DbSet<DeliveryStatus> DeliveryStatus { get; set; } = default!;
+        public DbSet<Payment> Payment { get; set; } 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Restaurant>()
@@ -48,16 +52,15 @@ namespace OnlineFoodDelivery.Data
                 .WithMany(c => c.MenuItems)
                 .HasForeignKey(i => i.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
-        public DbSet<Payment> Payment { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
                 .HasPrecision(10, 2); // Precision: total digits = 10, scale = 2
             modelBuilder.Entity<Order>()
                .Property(p => p.TotalAmount)
                .HasPrecision(10, 2);
-        }
+        
 
 
             modelBuilder.Entity<MenuItem>()
@@ -68,6 +71,23 @@ namespace OnlineFoodDelivery.Data
                 .Property(r => r.DeliveryCharges)
                 .HasColumnType("decimal(10,2)");
 
+
+            modelBuilder.Entity<DeliveryStatus>()
+                .HasOne(ds => ds.Order)
+                .WithMany()
+                .HasForeignKey(ds => ds.OrderId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent cascade
+
+            modelBuilder.Entity<DeliveryStatus>()
+                .HasOne(ds => ds.Agent)
+                .WithMany()
+                .HasForeignKey(ds => ds.AgentId)
+                .OnDelete(DeleteBehavior.Cascade); // Keep cascade here if needed
+
+
         }
+
+
+
     }
 }

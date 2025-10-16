@@ -1,18 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using OnlineFoodDelivery.Aspect;
 using OnlineFoodDelivery.Auth;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using OnlineFoodDelivery.Data;
+using OnlineFoodDelivery.EmailNotificationsService;
 using OnlineFoodDelivery.Repository;
 using OnlineFoodDelivery.Services;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// This line loads appsettings.json automatically
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 // Database connection
 builder.Services.AddDbContext<OnlineFoodDeliveryContext>(options =>
@@ -46,6 +51,18 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+
+
+
+builder.Services.AddScoped<IAgentRepository, AgentRepository>();
+builder.Services.AddScoped<IAgentService, AgentService>();
+builder.Services.AddScoped<ExceptionHandlerAttribute>();
+
+
+builder.Services.AddScoped<IDeliveryStatusRepository, DeliveryStatusRepository>();
+builder.Services.AddScoped<IDeliveryStatusService, DeliveryStatusService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 
 // Add JWT Authentication
