@@ -17,6 +17,7 @@ namespace OnlineFoodDelivery.Data
         public DbSet<CartItem> CartItem { get; set; } = default!;
         public DbSet<User> User { get; set; }
         public DbSet<MenuItem> MenuItem { get; set; }
-        
+      
+
     }
 }
