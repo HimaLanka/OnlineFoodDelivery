@@ -5,7 +5,7 @@
 namespace OnlineFoodDelivery.Migrations
 {
     /// <inheritdoc />
-    public partial class ff : Migration
+    public partial class user : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

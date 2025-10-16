@@ -33,8 +33,8 @@ namespace OnlineFoodDelivery.Migrations
                     b.Property<DateTime>("AddedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MenuItemId")
-                        .HasColumnType("int");
+                    b.Property<long>("MenuItemId")
+                        .HasColumnType("bigint");
 
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
@@ -56,38 +56,71 @@ namespace OnlineFoodDelivery.Migrations
                     b.ToTable("CartItem");
                 });
 
-            modelBuilder.Entity("OnlineFoodDelivery.Model.MenuCategory", b =>
+            modelBuilder.Entity("OnlineFoodDelivery.Model.Location", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("LocationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocationId"));
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("Area")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Pincode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("LocationId");
+
+                    b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("OnlineFoodDelivery.Model.MenuCategory", b =>
+                {
+                    b.Property<long>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CategoryId"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<long>("RestaurantId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("CategoryId");
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("MenuCategory");
+                    b.ToTable("MenuCategories");
                 });
 
             modelBuilder.Entity("OnlineFoodDelivery.Model.MenuItem", b =>
                 {
-                    b.Property<int>("MenuItemId")
+                    b.Property<long>("MenuItemId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuItemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("MenuItemId"));
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
@@ -96,14 +129,20 @@ namespace OnlineFoodDelivery.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ItemDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ItemImg")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<decimal>("ItemPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("MenuItemId");
 
@@ -123,8 +162,8 @@ namespace OnlineFoodDelivery.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RestaurantId")
-                        .HasColumnType("int");
+                    b.Property<long>("RestaurantId")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
@@ -143,22 +182,37 @@ namespace OnlineFoodDelivery.Migrations
 
             modelBuilder.Entity("OnlineFoodDelivery.Model.Restaurant", b =>
                 {
-                    b.Property<int>("RestaurantId")
+                    b.Property<long>("RestaurantId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("RestaurantId"));
 
                     b.Property<decimal>("DeliveryCharges")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
-                    b.Property<string>("ResName")
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ResName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("RestaurantId");
 
-                    b.ToTable("Restaurant");
+                    b.HasIndex("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("Restaurants");
                 });
 
             modelBuilder.Entity("OnlineFoodDelivery.User", b =>
@@ -258,7 +312,9 @@ namespace OnlineFoodDelivery.Migrations
                 {
                     b.HasOne("OnlineFoodDelivery.Model.Restaurant", "Restaurant")
                         .WithMany()
-                        .HasForeignKey("RestaurantId");
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("OnlineFoodDelivery.User", "User")
                         .WithMany()
@@ -269,6 +325,30 @@ namespace OnlineFoodDelivery.Migrations
                     b.Navigation("Restaurant");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OnlineFoodDelivery.Model.Restaurant", b =>
+                {
+                    b.HasOne("OnlineFoodDelivery.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("OnlineFoodDelivery.Model.Location", "Location")
+                        .WithMany("Restaurants")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("OnlineFoodDelivery.Model.Location", b =>
+                {
+                    b.Navigation("Restaurants");
                 });
 
             modelBuilder.Entity("OnlineFoodDelivery.Model.MenuCategory", b =>

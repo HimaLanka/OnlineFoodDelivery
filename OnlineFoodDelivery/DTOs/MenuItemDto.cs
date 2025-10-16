@@ -1,15 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OnlineFoodDelivery.Model;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OnlineFoodDelivery.Model
+namespace OnlineFoodDelivery.DTOs
 {
-    public class MenuItem
+    public class MenuItemDto
     {
-
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long MenuItemId { get; set; }
-
         [Required(ErrorMessage = "Item Name is required")]
         [StringLength(30, MinimumLength = 3)]
         public string ItemName { get; set; }
@@ -28,7 +24,5 @@ namespace OnlineFoodDelivery.Model
         [Required(ErrorMessage = "Category Id is required")]
         public long CategoryId { get; set; }
 
-        [ForeignKey("CategoryId")]
-        public MenuCategory Category { get; set; }
     }
 }
