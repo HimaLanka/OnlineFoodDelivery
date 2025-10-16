@@ -6,23 +6,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineFoodDelivery.Migrations
 {
     /// <inheritdoc />
-    public partial class _33 : Migration
+    public partial class fghjk : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Restaurant",
+                name: "Locations",
                 columns: table => new
                 {
-                    RestaurantId = table.Column<int>(type: "int", nullable: false)
+                    LocationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ResName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DeliveryCharges = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    State = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Area = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Pincode = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Restaurant", x => x.RestaurantId);
+                    table.PrimaryKey("PK_Locations", x => x.LocationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,21 +49,50 @@ namespace OnlineFoodDelivery.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MenuCategory",
+                name: "Restaurants",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    RestaurantId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RestaurantId = table.Column<int>(type: "int", nullable: false)
+                    ResName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    DeliveryCharges = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MenuCategory", x => x.CategoryId);
+                    table.PrimaryKey("PK_Restaurants", x => x.RestaurantId);
                     table.ForeignKey(
-                        name: "FK_MenuCategory_Restaurant_RestaurantId",
+                        name: "FK_Restaurants_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Restaurants_User_Id",
+                        column: x => x.Id,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MenuCategories",
+                columns: table => new
+                {
+                    CategoryId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    RestaurantId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuCategories", x => x.CategoryId);
+                    table.ForeignKey(
+                        name: "FK_MenuCategories_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Restaurant",
+                        principalTable: "Restaurants",
                         principalColumn: "RestaurantId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -75,16 +106,17 @@ namespace OnlineFoodDelivery.Migrations
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    RestaurantId = table.Column<int>(type: "int", nullable: true)
+                    RestaurantId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Order_Restaurant_RestaurantId",
+                        name: "FK_Order_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
-                        principalTable: "Restaurant",
-                        principalColumn: "RestaurantId");
+                        principalTable: "Restaurants",
+                        principalColumn: "RestaurantId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Order_User_UserId",
                         column: x => x.UserId,
@@ -97,22 +129,23 @@ namespace OnlineFoodDelivery.Migrations
                 name: "MenuItem",
                 columns: table => new
                 {
-                    MenuItemId = table.Column<int>(type: "int", nullable: false)
+                    MenuItemId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ItemName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ItemPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ItemDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ItemName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    ItemPrice = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    ItemDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ItemImg = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     IsVeg = table.Column<bool>(type: "bit", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MenuItem", x => x.MenuItemId);
                     table.ForeignKey(
-                        name: "FK_MenuItem_MenuCategory_CategoryId",
+                        name: "FK_MenuItem_MenuCategories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "MenuCategory",
+                        principalTable: "MenuCategories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -124,7 +157,7 @@ namespace OnlineFoodDelivery.Migrations
                     CartItemId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    MenuItemId = table.Column<int>(type: "int", nullable: false),
+                    MenuItemId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     AddedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: true)
@@ -167,8 +200,8 @@ namespace OnlineFoodDelivery.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MenuCategory_RestaurantId",
-                table: "MenuCategory",
+                name: "IX_MenuCategories_RestaurantId",
+                table: "MenuCategories",
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
@@ -185,6 +218,16 @@ namespace OnlineFoodDelivery.Migrations
                 name: "IX_Order_UserId",
                 table: "Order",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Restaurants_Id",
+                table: "Restaurants",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Restaurants_LocationId",
+                table: "Restaurants",
+                column: "LocationId");
         }
 
         /// <inheritdoc />
@@ -200,13 +243,16 @@ namespace OnlineFoodDelivery.Migrations
                 name: "Order");
 
             migrationBuilder.DropTable(
-                name: "MenuCategory");
+                name: "MenuCategories");
+
+            migrationBuilder.DropTable(
+                name: "Restaurants");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "Restaurant");
         }
     }
 }

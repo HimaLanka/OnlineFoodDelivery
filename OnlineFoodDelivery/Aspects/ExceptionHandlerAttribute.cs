@@ -47,6 +47,11 @@ namespace OnlineFoodDelivery.Aspect
             {
                 context.Result = new BadRequestObjectResult(message);
             }
+            else if (exceptionType == typeof(CategoryNotFoundException))
+            {
+                var result = new ConflictObjectResult(message);
+                context.Result = result;
+            }
 
 
             else
