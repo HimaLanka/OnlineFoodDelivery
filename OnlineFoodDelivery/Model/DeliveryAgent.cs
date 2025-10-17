@@ -7,7 +7,7 @@ namespace OnlineFoodDelivery.Model
     {
         [Key]
         public int AgentId { get; set; }
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string AgentStatus { get; set; }  // Available, Busy, Offline
@@ -15,7 +15,7 @@ namespace OnlineFoodDelivery.Model
         [Required]
         public string VehicleNumber { get; set; }
 
-        [ForeignKey("UserId")]
+        [ForeignKey("Id")]
         public User User { get; set; }
     }
 }

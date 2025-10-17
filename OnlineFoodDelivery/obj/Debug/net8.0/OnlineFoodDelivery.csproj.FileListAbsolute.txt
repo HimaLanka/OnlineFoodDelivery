@@ -1445,3 +1445,8 @@ C:\Users\2438699\Source\Repos\OnlineFoodDelivery\OnlineFoodDelivery\obj\Debug\ne
 C:\Users\2438699\Source\Repos\OnlineFoodDelivery\OnlineFoodDelivery\obj\Debug\net8.0\OnlineFoodDelivery.pdb
 C:\Users\2438699\Source\Repos\OnlineFoodDelivery\OnlineFoodDelivery\obj\Debug\net8.0\OnlineFoodDelivery.genruntimeconfig.cache
 C:\Users\2438699\Source\Repos\OnlineFoodDelivery\OnlineFoodDelivery\obj\Debug\net8.0\ref\OnlineFoodDelivery.dll
+C:\Users\2438777\source\repos\OnlineFoodDelivery\OnlineFoodDelivery\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\2438777\source\repos\OnlineFoodDelivery\OnlineFoodDelivery\bin\Debug\net8.0\MailKit.dll
+C:\Users\2438777\source\repos\OnlineFoodDelivery\OnlineFoodDelivery\bin\Debug\net8.0\MimeKit.dll
+C:\Users\2438777\source\repos\OnlineFoodDelivery\OnlineFoodDelivery\bin\Debug\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\2438777\source\repos\OnlineFoodDelivery\OnlineFoodDelivery\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OnlineFoodDelivery.Model;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineFoodDelivery.DTOs
 {
@@ -13,6 +14,11 @@ namespace OnlineFoodDelivery.DTOs
 
         [Required(ErrorMessage = "Location Id is required")]
         public int LocationId { get; set; }
-    }
 
+        [Required(ErrorMessage = "User Id is required")]
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Delivery Charges are required")]
+        public decimal DeliveryCharges { get; set; }
+    }
 }

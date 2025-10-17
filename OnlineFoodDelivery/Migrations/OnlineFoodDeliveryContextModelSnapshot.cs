@@ -56,6 +56,62 @@ namespace OnlineFoodDelivery.Migrations
                     b.ToTable("CartItem");
                 });
 
+            modelBuilder.Entity("OnlineFoodDelivery.Model.DeliveryAgent", b =>
+                {
+                    b.Property<int>("AgentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AgentId"));
+
+                    b.Property<string>("AgentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VehicleNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AgentId");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("DeliveryAgent");
+                });
+
+            modelBuilder.Entity("OnlineFoodDelivery.Model.DeliveryStatus", b =>
+                {
+                    b.Property<int>("DeliveryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeliveryId"));
+
+                    b.Property<int>("AgentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EstimatedTimeOfArrival")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StatusOfDelivey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DeliveryId");
+
+                    b.HasIndex("AgentId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("DeliveryStatus");
+                });
+
             modelBuilder.Entity("OnlineFoodDelivery.Model.Location", b =>
                 {
                     b.Property<int>("LocationId")
@@ -226,6 +282,8 @@ namespace OnlineFoodDelivery.Migrations
 
                     b.HasKey("PaymentId");
 
+                    b.HasIndex("OrderId");
+
                     b.ToTable("Payment");
                 });
 
@@ -335,6 +393,36 @@ namespace OnlineFoodDelivery.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("OnlineFoodDelivery.Model.DeliveryAgent", b =>
+                {
+                    b.HasOne("OnlineFoodDelivery.User", "User")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OnlineFoodDelivery.Model.DeliveryStatus", b =>
+                {
+                    b.HasOne("OnlineFoodDelivery.Model.DeliveryAgent", "Agent")
+                        .WithMany()
+                        .HasForeignKey("AgentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineFoodDelivery.Model.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Agent");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("OnlineFoodDelivery.Model.MenuCategory", b =>
                 {
                     b.HasOne("OnlineFoodDelivery.Model.Restaurant", "Restaurant")
@@ -376,6 +464,15 @@ namespace OnlineFoodDelivery.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("OnlineFoodDelivery.Model.Payment", b =>
+                {
+                    b.HasOne("OnlineFoodDelivery.Model.Order", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("OnlineFoodDelivery.Model.Restaurant", b =>
                 {
                     b.HasOne("OnlineFoodDelivery.User", "Owner")
@@ -408,6 +505,8 @@ namespace OnlineFoodDelivery.Migrations
             modelBuilder.Entity("OnlineFoodDelivery.Model.Order", b =>
                 {
                     b.Navigation("CartItems");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("OnlineFoodDelivery.Model.Restaurant", b =>

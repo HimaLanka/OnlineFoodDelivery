@@ -16,8 +16,7 @@ namespace OnlineFoodDelivery.Repository
         public List<Restaurant> GetResByCity(string locationCity);
         public List<Restaurant> GetResByArea(string locationArea);
         public List<Restaurant> GetResByPincode(string locationPincode);
-        
-        
+
     }
 
 }

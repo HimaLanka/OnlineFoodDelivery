@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineFoodDelivery.Migrations
 {
     /// <inheritdoc />
-    public partial class fghjk : Migration
+    public partial class yy : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,6 +46,27 @@ namespace OnlineFoodDelivery.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliveryAgent",
+                columns: table => new
+                {
+                    AgentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    AgentStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryAgent", x => x.AgentId);
+                    table.ForeignKey(
+                        name: "FK_DeliveryAgent_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,7 +124,7 @@ namespace OnlineFoodDelivery.Migrations
                 {
                     OrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     RestaurantId = table.Column<long>(type: "bigint", nullable: false)
@@ -147,6 +168,62 @@ namespace OnlineFoodDelivery.Migrations
                         column: x => x.CategoryId,
                         principalTable: "MenuCategories",
                         principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliveryStatus",
+                columns: table => new
+                {
+                    DeliveryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    AgentId = table.Column<int>(type: "int", nullable: false),
+                    StatusOfDelivey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EstimatedTimeOfArrival = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryStatus", x => x.DeliveryId);
+                    table.ForeignKey(
+                        name: "FK_DeliveryStatus_DeliveryAgent_AgentId",
+                        column: x => x.AgentId,
+                        principalTable: "DeliveryAgent",
+                        principalColumn: "AgentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DeliveryStatus_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payment",
+                columns: table => new
+                {
+                    PaymentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    Method = table.Column<int>(type: "int", nullable: false),
+                    CardType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    CardNumber = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
+                    UpiProvider = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    UpiId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    IsCashOnDelivery = table.Column<bool>(type: "bit", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    IsSuccess = table.Column<bool>(type: "bit", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payment", x => x.PaymentId);
+                    table.ForeignKey(
+                        name: "FK_Payment_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -200,6 +277,21 @@ namespace OnlineFoodDelivery.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DeliveryAgent_UserId",
+                table: "DeliveryAgent",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryStatus_AgentId",
+                table: "DeliveryStatus",
+                column: "AgentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeliveryStatus_OrderId",
+                table: "DeliveryStatus",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MenuCategories_RestaurantId",
                 table: "MenuCategories",
                 column: "RestaurantId");
@@ -220,6 +312,11 @@ namespace OnlineFoodDelivery.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payment_OrderId",
+                table: "Payment",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Restaurants_Id",
                 table: "Restaurants",
                 column: "Id");
@@ -237,7 +334,16 @@ namespace OnlineFoodDelivery.Migrations
                 name: "CartItem");
 
             migrationBuilder.DropTable(
+                name: "DeliveryStatus");
+
+            migrationBuilder.DropTable(
+                name: "Payment");
+
+            migrationBuilder.DropTable(
                 name: "MenuItem");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryAgent");
 
             migrationBuilder.DropTable(
                 name: "Order");

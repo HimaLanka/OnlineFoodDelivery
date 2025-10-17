@@ -1,6 +1,6 @@
 ﻿using OnlineFoodDelivery.Data;
 using OnlineFoodDelivery.Exceptions;
-using OnlineFoodDelivery.Migrations;
+//using OnlineFoodDelivery.Migrations;
 using OnlineFoodDelivery.Model;
 using System.Text.RegularExpressions;
 
