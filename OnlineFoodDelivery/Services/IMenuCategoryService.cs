@@ -10,6 +10,7 @@ namespace OnlineFoodDelivery.Services
         public bool RemoveCategory1(long Cid);
         public MenuCategory GetCategoryById1(long Cid);
         public List<MenuCategory> AllCategoriesByResId1(long Rid);
-        
+        //public bool RestaurantExists(long restaurantId);
+
     }
 }

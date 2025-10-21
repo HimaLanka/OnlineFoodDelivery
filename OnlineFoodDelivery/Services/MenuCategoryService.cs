@@ -10,15 +10,23 @@ namespace OnlineFoodDelivery.Services
     public class MenuCategoryService:IMenuCategoryService
     {
         private readonly IMenuCategoryRepository _repo;
-        
+
 
         public MenuCategoryService(IMenuCategoryRepository repo)
         {
             _repo = repo;
-           
+
         }
         public bool AddCategory1(MenuCategoryDto category)
         {
+
+
+            // Check if restaurant exists using repository
+            if (!_repo.RestaurantExists(category.RestaurantId))
+            {
+                // Restaurant doesn't exist
+                return false;
+            }
             var categ = new MenuCategory
             {
                 CategoryName = category.CategoryName,
@@ -30,14 +38,18 @@ namespace OnlineFoodDelivery.Services
         }
         public bool UpdateCategory1(long Cid, MenuCategoryDto category)
         {
-            var categ=_repo.GetCategoryById(Cid);
-            if (categ == null) 
+            var categ = _repo.GetCategoryById(Cid);
+            if (categ == null)
             {
                 throw new CategoryNotFoundException($"Category with category id {Cid} not found.");
             }
+            if (!_repo.RestaurantExists(category.RestaurantId))
+            {
 
-            categ.RestaurantId=category.RestaurantId;
-            categ.CategoryName=category.CategoryName;   
+                return false;
+            }
+            categ.RestaurantId = category.RestaurantId;
+            categ.CategoryName = category.CategoryName;
 
             _repo.UpdateCategory(categ);
             return true;

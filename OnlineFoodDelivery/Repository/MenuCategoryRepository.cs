@@ -29,13 +29,17 @@ namespace OnlineFoodDelivery.Repository
         }
         public MenuCategory GetCategoryById(long Cid)
         {
-            return _context.MenuCategories.FirstOrDefault(r=>r.CategoryId==Cid);
+            return _context.MenuCategories.FirstOrDefault(r => r.CategoryId == Cid);
         }
         public List<MenuCategory> AllCategoriesByResId(long Rid)
         {
             return _context.MenuCategories.Where(r => r.RestaurantId == Rid).ToList();
         }
 
+        public bool RestaurantExists(long restaurantId)
+        {
+            return _context.Restaurants.Any(r => r.RestaurantId == restaurantId);
+        }
 
 
 

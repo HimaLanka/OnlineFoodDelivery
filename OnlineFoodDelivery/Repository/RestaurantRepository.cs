@@ -57,7 +57,7 @@ namespace OnlineFoodDelivery.Repository
 
         public List<Restaurant> GetResByLocationId(int locationId) =>
             _context.Restaurants.Include(r => r.Location).Where(r => r.LocationId == locationId).ToList();
-        
+
         public List<Restaurant> GetResByState(string state)
         {
             return _context.Restaurants.Include(r => r.Location).Where(r => r.Location.State.ToLower().Contains(state.Trim().ToLower())).ToList();
@@ -81,9 +81,26 @@ namespace OnlineFoodDelivery.Repository
             return _context.Restaurants.Include(r => r.Location).Where(r => r.Location.Pincode.ToLower().Contains(pincode.Trim().ToLower())).ToList();
         }
 
-        
+        public Restaurant GetRestaurantWithDetails(string restaurantName)
+        {
+            return _context.Restaurants
+                .Include(r => r.MenuCategories)
+                    .ThenInclude(c => c.MenuItems)
+                .Include(r => r.Location)
+                .FirstOrDefault(r => r.ResName.ToLower() == restaurantName.ToLower());
+        }
+        public Restaurant GetRestaurantWithDetailsById(long restaurantId)
+        {
+            return _context.Restaurants
+                .Include(r => r.MenuCategories)
+                    .ThenInclude(c => c.MenuItems)
+                .Include(r => r.Location)
+                .FirstOrDefault(r => r.RestaurantId == restaurantId);
+        }
 
-        
+
+
+
     }
 
 }

@@ -12,8 +12,8 @@ using OnlineFoodDelivery.Data;
 namespace OnlineFoodDelivery.Migrations
 {
     [DbContext(typeof(OnlineFoodDeliveryContext))]
-    [Migration("20251016131030_fghjk")]
-    partial class fghjk
+    [Migration("20251021184012_kjhg")]
+    partial class kjhg
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

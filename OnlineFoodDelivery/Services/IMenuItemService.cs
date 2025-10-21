@@ -12,5 +12,6 @@ namespace OnlineFoodDelivery.Services
         public MenuItem GetItemByName1(string Name);
         public List<MenuItem> GetAllItems1();
         public List<MenuItem> GetItemsByCategoryId1(long Cid);
+        public List<MenuItem> SearchItemsWithRestaurant(string itemName);
     }
 }

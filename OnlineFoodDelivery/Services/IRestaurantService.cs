@@ -5,7 +5,7 @@ namespace OnlineFoodDelivery.Services
 {
     public interface IRestaurantService
     {
-        bool CreateRestaurant(RestaurantDto dto, int ownerId);
+        bool CreateRestaurant(RestaurantDto dto);
         List<Restaurant> GetRestaurantByOwnerId(int ownerId);
         bool UpdateRestaurant(long id, RestaurantDto dto, int ownerId);
         bool DeleteRestaurant(long id, int ownerId);
@@ -16,8 +16,8 @@ namespace OnlineFoodDelivery.Services
         List<Restaurant> GetResByCity(string locationCity);
         List<Restaurant> GetResByArea(string locationArea);
         List<Restaurant> GetResByPincode(string locationPincode);
-        
-
+        public Restaurant GetRestaurantWithDetails(string restaurantName);
+        public Restaurant GetRestaurantWithDetailsById(long restaurantId);
 
     }
 

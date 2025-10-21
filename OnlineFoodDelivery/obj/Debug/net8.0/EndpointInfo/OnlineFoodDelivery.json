@@ -931,6 +931,27 @@
         }
       }
     },
+    "/api/MenuItem/SearchItemAcrossRestaurants": {
+      "get": {
+        "tags": [
+          "MenuItem"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Orders": {
       "get": {
         "tags": [
@@ -1103,7 +1124,7 @@
         }
       }
     },
-    "/api/Restaurant/{id}": {
+    "/api/Restaurant/{Rid}": {
       "put": {
         "tags": [
           "Restaurant"
@@ -1111,11 +1132,18 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "Rid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1143,7 +1171,9 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/Restaurant/{id}": {
       "delete": {
         "tags": [
           "Restaurant"
@@ -1156,6 +1186,14 @@
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "userid",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -1300,6 +1338,49 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Restaurant/GetRestaurantDetails": {
+      "get": {
+        "tags": [
+          "Restaurant"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Restaurant/GetRestaurantDetailsById": {
+      "get": {
+        "tags": [
+          "Restaurant"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -1727,6 +1808,8 @@
       },
       "RestaurantDto": {
         "required": [
+          "deliveryCharges",
+          "id",
           "image",
           "locationId",
           "resName"
@@ -1745,6 +1828,14 @@
           "locationId": {
             "type": "integer",
             "format": "int32"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deliveryCharges": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

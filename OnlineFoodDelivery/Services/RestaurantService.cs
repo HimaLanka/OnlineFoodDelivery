@@ -16,7 +16,7 @@ namespace OnlineFoodDelivery.Services
             _context = context;
         }
 
-        public bool CreateRestaurant(RestaurantDto dto, int ownerId)
+        public bool CreateRestaurant(RestaurantDto dto)
         {
             // Check if restaurant already exists for this owner
             //if (_repo.GetByOwnerId(ownerId) != null) return false;
@@ -30,7 +30,8 @@ namespace OnlineFoodDelivery.Services
                 ResName = dto.ResName,
                 Image = dto.Image,
                 LocationId = dto.LocationId,
-                Id = ownerId
+                Id = dto.Id,
+                DeliveryCharges = dto.DeliveryCharges
             };
 
             _repo.Add(restaurant);
@@ -52,6 +53,7 @@ namespace OnlineFoodDelivery.Services
             restaurant.ResName = dto.ResName;
             restaurant.Image = dto.Image;
             restaurant.LocationId = dto.LocationId;
+            restaurant.DeliveryCharges = dto.DeliveryCharges;
 
             _repo.Update(restaurant);
             return true;
@@ -76,8 +78,44 @@ namespace OnlineFoodDelivery.Services
         public List<Restaurant> GetResByCity(string locationCity) => _repo.GetResByCity(locationCity);
         public List<Restaurant> GetResByArea(string locationArea) => _repo.GetResByArea(locationArea);
         public List<Restaurant> GetResByPincode(string locationPincode) => _repo.GetResByPincode(locationPincode);
-        
 
+        public Restaurant GetRestaurantWithDetails(string restaurantName)
+        {
+            var restaurant = _repo.GetRestaurantWithDetails(restaurantName);
+            if (restaurant == null || restaurant.MenuCategories == null || restaurant.Location == null)
+            {
+                return null;
+            }
+
+            foreach (var category in restaurant.MenuCategories)
+            {
+                if (category.MenuItems == null)
+                {
+                    continue;
+                }
+            }
+
+            return restaurant;
+        }
+
+        public Restaurant GetRestaurantWithDetailsById(long restaurantId)
+        {
+            var restaurant = _repo.GetRestaurantWithDetailsById(restaurantId);
+            if (restaurant == null || restaurant.MenuCategories == null || restaurant.Location == null)
+            {
+                return null;
+            }
+
+            foreach (var category in restaurant.MenuCategories)
+            {
+                if (category.MenuItems == null)
+                {
+                    continue;
+                }
+            }
+
+            return restaurant;
+        }
 
     }
 }

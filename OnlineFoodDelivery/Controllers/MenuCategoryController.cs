@@ -25,8 +25,7 @@ namespace OnlineFoodDelivery.Controllers
         {
 
             var success = _service.AddCategory1(dto);
-            return success ? Ok("Category Added") : BadRequest("Something Went wrong.");
-            //return StatusCode(201, _service.AddCategory1(dto));
+            return success ? Ok("Category added") : NotFound("Restaurant ID not found");
         }
 
 
@@ -55,7 +54,7 @@ namespace OnlineFoodDelivery.Controllers
                 var success = _service.RemoveCategory1(Cid);
                 return Ok("Category deleted");
             }
-            catch(CategoryNotFoundException ex)
+            catch (CategoryNotFoundException ex)
             {
                 return NotFound(new { message = ex.Message });
             }
@@ -65,7 +64,7 @@ namespace OnlineFoodDelivery.Controllers
         [HttpGet("GetCategoryByCid")]
         public IActionResult GetcategoryById(long Cid)
         {
-            
+
             var category = _service.GetCategoryById1(Cid);
             return category != null ? Ok(category) : NotFound("Category not found");
         }

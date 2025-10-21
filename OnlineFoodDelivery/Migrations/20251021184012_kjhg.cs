@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineFoodDelivery.Migrations
 {
     /// <inheritdoc />
-    public partial class fghjk : Migration
+    public partial class kjhg : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,5 +1,6 @@
 ﻿using OnlineFoodDelivery.Data;
 using OnlineFoodDelivery.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace OnlineFoodDelivery.Repository
 {
@@ -41,7 +42,22 @@ namespace OnlineFoodDelivery.Repository
         }
         public List<MenuItem> GetItemsByCategoryId(long Cid)
         {
-            return _context.MenuItem.Where(r=>r.CategoryId==Cid).ToList();
+            return _context.MenuItem.Where(r => r.CategoryId == Cid).ToList();
+        }
+
+        public List<MenuItem> SearchItemsWithRestaurant(string itemName)
+        {
+            return _context.MenuItem
+                .Include(i => i.Category)
+                    .ThenInclude(c => c.Restaurant)
+                        .ThenInclude(r => r.Location)
+                .Where(i => i.ItemName.ToLower().Contains(itemName.ToLower()))
+                .ToList();
+        }
+
+        public bool CategoryExists(long categoryId)
+        {
+            return _context.MenuCategories.Any(c => c.CategoryId == categoryId);
         }
 
     }

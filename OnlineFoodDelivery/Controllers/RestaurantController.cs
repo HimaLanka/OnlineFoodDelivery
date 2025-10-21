@@ -22,8 +22,9 @@ namespace OnlineFoodDelivery.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] RestaurantDto dto)
         {
-            var userId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
-            var success = _service.CreateRestaurant(dto, userId);
+            //var userId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+
+            var success = _service.CreateRestaurant(dto);
             return success ? Ok("Restaurant created") : BadRequest("Restaurant already exists or invalid location");
         }
 
@@ -39,10 +40,11 @@ namespace OnlineFoodDelivery.Controllers
 
         // ✅ Update restaurant (only if owned by user)
         [Authorize(Roles = "restaurantowner")]
-        [HttpPut("{id}")]
+        [HttpPut("{Rid}")]
         public IActionResult Update(long id, [FromBody] RestaurantDto dto)
         {
-            var userId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+            //var userId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+            var userId = dto.Id;
             var success = _service.UpdateRestaurant(id, dto, userId);
             return success ? Ok("Restaurant updated") : NotFound("Restaurant not found or unauthorized");
         }
@@ -50,9 +52,10 @@ namespace OnlineFoodDelivery.Controllers
         // ✅ Delete restaurant (only if owned by user)
         [Authorize(Roles = "restaurantowner")]
         [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
+        public IActionResult Delete(long id, int userid)
         {
-            var userId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+            //var userId = int.Parse(User.FindFirst("Id")?.Value ?? "0");
+            var userId = userid;
             var success = _service.DeleteRestaurant(id, userId);
             return success ? Ok("Restaurant deleted") : NotFound("Restaurant not found or unauthorized");
         }
@@ -95,7 +98,7 @@ namespace OnlineFoodDelivery.Controllers
 
         [AllowAnonymous]
         [HttpGet("location/city/{City}")]
-        public IActionResult GetResByCity(string City) 
+        public IActionResult GetResByCity(string City)
         //public IActionResult GetResByCity(string locationCity), if we give like this
         //it will ask City(above as required) and locationCity(optional) also.
         {
@@ -119,7 +122,21 @@ namespace OnlineFoodDelivery.Controllers
             return restaurants != null ? Ok(restaurants) : NotFound("Restaurant not found");
         }
 
-        
+        [AllowAnonymous]
+        [HttpGet("GetRestaurantDetails")]
+        public IActionResult GetRestaurantDetails([FromQuery] string name)
+        {
+            var restaurant = _service.GetRestaurantWithDetails(name);
+            return restaurant != null ? Ok(restaurant) : NotFound("Restaurant not found");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetRestaurantDetailsById")]
+        public IActionResult GetRestaurantDetailsById([FromQuery] int id)
+        {
+            var restaurant = _service.GetRestaurantWithDetailsById(id);
+            return restaurant != null ? Ok(restaurant) : NotFound("Restaurant not found");
+        }
 
     }
 }

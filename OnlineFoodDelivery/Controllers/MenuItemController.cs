@@ -24,7 +24,7 @@ namespace OnlineFoodDelivery.Controllers
         {
 
             var success = _service.AddItem1(dto);
-            return success ? Ok("Item Added") : BadRequest("Something Went wrong.");
+            return success ? Ok("Item added successfully") : BadRequest("Invalid Category ID");
         }
 
         [Authorize(Roles = "restaurantowner")]
@@ -33,7 +33,7 @@ namespace OnlineFoodDelivery.Controllers
         {
 
             var success = _service.UpdateItem1(Iid, dto);
-            return success ? Ok("Item updated") : NotFound("Item not found or unauthorized");
+            return success ? Ok("Item updated successfully") : NotFound("Invalid Category ID");
         }
 
         [Authorize(Roles = "restaurantowner")]
@@ -42,7 +42,7 @@ namespace OnlineFoodDelivery.Controllers
         {
 
             var success = _service.RemoveItem1(Iid);
-            return success ? Ok("Item deleted") : NotFound("Item not found or unauthorized");
+            return success ? Ok("Item deleted succesfully") : NotFound("Item not found or unauthorized");
         }
 
         [Authorize(Roles = "restaurantowner")]
@@ -58,7 +58,7 @@ namespace OnlineFoodDelivery.Controllers
         [HttpGet("GetItemByName")]
         public IActionResult GetItemByName(string name)
         {
-            
+
             var item = _service.GetItemByName1(name);
             return item != null ? Ok(item) : NotFound("Item not found");
         }
@@ -79,6 +79,13 @@ namespace OnlineFoodDelivery.Controllers
             return Ok(success);
         }
 
+        [AllowAnonymous]
+        [HttpGet("SearchItemAcrossRestaurants")]
+        public IActionResult SearchItemAcrossRestaurants([FromQuery] string name)
+        {
+            var items = _service.SearchItemsWithRestaurant(name);
+            return items.Any() ? Ok(items) : NotFound("No items found");
+        }
 
 
 

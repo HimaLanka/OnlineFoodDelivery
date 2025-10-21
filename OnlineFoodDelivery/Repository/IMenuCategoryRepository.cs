@@ -10,6 +10,8 @@ namespace OnlineFoodDelivery.Repository
         public MenuCategory GetCategoryById(long Cid);
         public List<MenuCategory> AllCategoriesByResId(long Rid);
         //public List<MenuCategory> GetCategoriesWithItemsByResId(long RestaurantId);
+        public bool RestaurantExists(long restaurantId);
+
 
     }
 }

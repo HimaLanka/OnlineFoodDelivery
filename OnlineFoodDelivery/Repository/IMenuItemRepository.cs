@@ -12,7 +12,8 @@ namespace OnlineFoodDelivery.Repository
         public List<MenuItem> GetAllItems();
         public List<MenuItem> GetItemsByCategoryId(long Cid);
         //public List<MenuItem> GetItemsByRestaurantId(long Rid);
-
+        public List<MenuItem> SearchItemsWithRestaurant(string itemName);
+        public bool CategoryExists(long categoryId);
 
     }
 }

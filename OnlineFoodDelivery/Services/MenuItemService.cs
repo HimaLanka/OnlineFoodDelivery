@@ -18,6 +18,12 @@ namespace OnlineFoodDelivery.Services
         }
         public bool AddItem1(MenuItemDto item)
         {
+            if (!_repo.CategoryExists(item.CategoryId))
+            {
+
+                return false;
+            }
+
             var item1 = new MenuItem
             {
                 ItemName = item.ItemName,
@@ -25,7 +31,7 @@ namespace OnlineFoodDelivery.Services
                 ItemDescription = item.ItemDescription,
                 ItemImg = item.ItemImg,
                 IsAvailable = item.IsAvailable,
-                IsVeg=item.IsVeg,
+                IsVeg = item.IsVeg,
                 CategoryId = item.CategoryId
             };
 
@@ -34,14 +40,19 @@ namespace OnlineFoodDelivery.Services
         }
         public bool UpdateItem1(long Iid, MenuItemDto item)
         {
+
+            if (!_repo.CategoryExists(item.CategoryId))
+            {
+                return false;
+            }
             var item2 = _repo.GetItemById(Iid);
             if (item2 == null) { return false; }
-            item2.ItemName= item.ItemName;
-            item2.ItemPrice= item.ItemPrice;
-            item2.ItemDescription= item.ItemDescription;
+            item2.ItemName = item.ItemName;
+            item2.ItemPrice = item.ItemPrice;
+            item2.ItemDescription = item.ItemDescription;
             item2.ItemImg = item.ItemImg;
             item2.IsAvailable = item.IsAvailable;
-            item2.IsVeg= item.IsVeg;
+            item2.IsVeg = item.IsVeg;
             item2.CategoryId = item.CategoryId;
 
             _repo.UpdateItem(item2);
@@ -69,6 +80,11 @@ namespace OnlineFoodDelivery.Services
         public List<MenuItem> GetItemsByCategoryId1(long Cid)
         {
             return _repo.GetItemsByCategoryId(Cid);
+        }
+
+        public List<MenuItem> SearchItemsWithRestaurant(string itemName)
+        {
+            return _repo.SearchItemsWithRestaurant(itemName);
         }
     }
 }
